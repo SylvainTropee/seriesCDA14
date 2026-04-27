@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Series{% endblock %}</title>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Series{% endblock %}</title>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <header>
-            <h1>Welcome in Series !</h1>
-            {% include 'views/nav/nav.html.twig' %}
-        </header>
-        <main>
-            {% block body %}{% endblock %}
-        </main>
-        <footer>
-            {% include 'views/nav/nav.html.twig' %}
-        </footer>
-    </body>
+    <link rel="icon" href="{{ asset('img/icon.png') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>
+            <a href="{{ path('main_home') }}">
+                <img src="{{ asset('img/logo.svg') }}" alt="Series">
+            </a>
+        </h1>
+        {% include 'views/nav/nav.html.twig' %}
+    </header>
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+    <footer>
+        {% include 'views/nav/nav.html.twig' %}
+    </footer>
+
+</div>
+</body>
 </html>
