@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Bienvenue Michel !</h1>
+    <h1>Bienvenue {{ username }} !</h1>
+    {#    pas de protection #}
+    <h1>Bienvenue {{ username | raw }} !</h1>
+    {#    on enlève le code malveillant #}
+    <h1>Bienvenue {{ username | striptags }} !</h1>
 {% endblock %}
 
 {% block title %}
