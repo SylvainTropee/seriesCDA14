@@ -11,5 +11,40 @@
 
 <h1>C'est par ici les tests</h1>
 
+{# Création de variable #}
+{% set name = "Sylvain" %}
+{# Lecture de la variable #}
+<h2>Bienvenue {{ name }}</h2>
+
+{# Création d'un tableau #}
+{% set colors = ["red", "blue", "pink", "green"] %}
+
+{% for color in colors %}
+    {% if loop.first %}
+        <p>Première couleur :</p>
+    {% elseif loop.last %}
+        <p>Dernière couleur :</p>
+    {% endif %}
+
+    <div style="background-color: {{ color }}">{{ color }}</div>
+    <div>Index : {{ loop.index0 }}</div>
+{% endfor %}
+
+{# Utilisation d'objet #}
+{% set serie = {
+    'name' : 'Code Quantum',
+    'year' : 1990
+} %}
+
+<div>Nom de la série : {{ serie.name }}</div>
+
+{# Quelques filtres #}
+<h2>Filtres</h2>
+<div>Prénom en majuscule : {{ name | upper }}</div>
+<div>Taille du tableau : {{ colors | length }}</div>
+<div>Joindre un tableau : {{ colors | join('-') }}</div>
+<div>Date du jour : {{ "now" | date('d/m/Y') }}</div>
+
 </body>
 </html>
+
