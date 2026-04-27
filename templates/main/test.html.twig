@@ -1,50 +1,41 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html.twig' %}
 
-<h1>C'est par ici les tests</h1>
+{% block body %}
 
-{# Création de variable #}
-{% set name = "Sylvain" %}
-{# Lecture de la variable #}
-<h2>Bienvenue {{ name }}</h2>
+    <h1>C'est par ici les tests</h1>
 
-{# Création d'un tableau #}
-{% set colors = ["red", "blue", "pink", "green"] %}
+    {# Création de variable #}
+    {% set name = "Sylvain" %}
+    {# Lecture de la variable #}
+    <h2>Bienvenue {{ name }}</h2>
 
-{% for color in colors %}
-    {% if loop.first %}
-        <p>Première couleur :</p>
-    {% elseif loop.last %}
-        <p>Dernière couleur :</p>
-    {% endif %}
+    {# Création d'un tableau #}
+    {% set colors = ["red", "blue", "pink", "green"] %}
 
-    <div style="background-color: {{ color }}">{{ color }}</div>
-    <div>Index : {{ loop.index0 }}</div>
-{% endfor %}
+    {% for color in colors %}
+        {% if loop.first %}
+            <p>Première couleur :</p>
+        {% elseif loop.last %}
+            <p>Dernière couleur :</p>
+        {% endif %}
 
-{# Utilisation d'objet #}
-{% set serie = {
-    'name' : 'Code Quantum',
-    'year' : 1990
-} %}
+        <div style="background-color: {{ color }}">{{ color }}</div>
+        <div>Index : {{ loop.index0 }}</div>
+    {% endfor %}
 
-<div>Nom de la série : {{ serie.name }}</div>
+    {# Utilisation d'objet #}
+    {% set serie = {
+        'name' : 'Code Quantum',
+        'year' : 1990
+    } %}
 
-{# Quelques filtres #}
-<h2>Filtres</h2>
-<div>Prénom en majuscule : {{ name | upper }}</div>
-<div>Taille du tableau : {{ colors | length }}</div>
-<div>Joindre un tableau : {{ colors | join('-') }}</div>
-<div>Date du jour : {{ "now" | date('d/m/Y') }}</div>
+    <div>Nom de la série : {{ serie.name }}</div>
 
-</body>
-</html>
+    {# Quelques filtres #}
+    <h2>Filtres</h2>
+    <div>Prénom en majuscule : {{ name | upper }}</div>
+    <div>Taille du tableau : {{ colors | length }}</div>
+    <div>Joindre un tableau : {{ colors | join('-') }}</div>
+    <div>Date du jour : {{ "now" | date('d/m/Y') }}</div>
 
+{% endblock %}
