@@ -1,5 +1,16 @@
 {% extends 'base.html.twig' %}
 
+
+{% block extraStyles %}
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.2)),
+            url("{{ asset('img/backdrops/' ~ serie.backdrop) }}");
+        }
+    </style>
+{% endblock %}
+
+
 {% block body %}
     <section>
         <div class="serie-details">
@@ -8,6 +19,7 @@
             </div>
             <div class="serie-details-infos">
                 <h2>Detail of {{ serie.name }}</h2>
+                <div><a class="link_button" href="{{ path('serie_delete', {'id': serie.id}) }}">Delete</a></div>
                 <div>User ratings : {{ serie.vote }}</div>
                 <div>Categorized in : {{ serie.genres }}}</div>
                 <div>Serie status : {{ serie.status }}</div>
