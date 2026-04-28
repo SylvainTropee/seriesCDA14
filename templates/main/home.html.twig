@@ -2,9 +2,9 @@
 
 {% block body %}
     <h1>Bienvenue {{ username }} !</h1>
-    {#    pas de protection #}
+    {# pas de protection #}
     <h1>Bienvenue {{ username | raw }} !</h1>
-    {#    on enlève le code malveillant #}
+    {# on enlève le code malveillant #}
     <h1>Bienvenue {{ username | striptags }} !</h1>
 {% endblock %}
 
