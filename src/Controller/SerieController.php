@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Serie;
+use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,20 +14,29 @@ final class SerieController extends AbstractController
 {
     #[Route('', name: 'list')]
     #[Route('/list', name: 'list2')]
-    public function list(): Response
+    public function list(SerieRepository $serieRepository): Response
     {
-        //TODO renvoyer la liste des séries
-        return $this->render('serie/list.html.twig');
+//        $series = $serieRepository->findAll();
+//        $series = $serieRepository->findBy(["status" => "ended"], ["name" => "ASC"]);
+
+        $series = $serieRepository->findBy([], ['popularity' => 'DESC']);
+
+        return $this->render('serie/list.html.twig', [
+            "series" => $series
+        ]);
     }
 
 
     #[Route('/{id}', name: 'detail', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function detail(int $id): Response
+    public function detail(int $id, SerieRepository $serieRepository): Response
     {
 
-        dump($id);
-        //TODO renvoyer une série
-        return $this->render('serie/detail.html.twig');
+        $serie = $serieRepository->find($id);
+//        $serie = $serieRepository->findOneBy(['id' => $id]);
+
+        return $this->render('serie/detail.html.twig', [
+            'serie' => $serie
+        ]);
     }
 
     #[Route('/create', name: 'create', methods: ["GET", "POST"])]

@@ -1,6 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Detail of TV-Show</h2>
+    <section>
+        <div class="serie-details">
+            <div>
+                <img src="{{ asset('img/posters/series/' ~ serie.poster) }}" alt="{{ serie.name }}">
+            </div>
+            <div class="serie-details-infos">
+                <h2>Detail of {{ serie.name }}</h2>
+                <div>User ratings : {{ serie.vote }}</div>
+                <div>Categorized in : {{ serie.genres }}}</div>
+                <div>Serie status : {{ serie.status }}</div>
+                <div>Aired from {{ serie.firstAirDate | date('Y-m-d') }}
+                    to {{ serie.lastAirDate | date('Y-m-d') }}</div>
+                <div>{{ serie.overview | nl2br }}</div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
 
