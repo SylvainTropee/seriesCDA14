@@ -2,7 +2,14 @@
 
 {% block body %}
     <h2>List of TV-Show</h2>
-
+    <div>
+        {% if currentPage > 1 %}
+            <a href="{{ path('serie_list', {'page': currentPage - 1 }) }}" class="link_button">Previous page</a>
+        {% endif %}
+        {% if currentPage < maxPage %}
+            <a href="{{ path('serie_list', {'page': currentPage + 1 }) }}" class="link_button">Next page</a>
+        {% endif %}
+    </div>
     <section class="series-list">
         {% for serie in series %}
             <article>

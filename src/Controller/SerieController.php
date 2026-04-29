@@ -12,18 +12,31 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/serie', name: 'serie_')]
 final class SerieController extends AbstractController
 {
-    #[Route('', name: 'list')]
-    #[Route('/list', name: 'list2')]
-    public function list(SerieRepository $serieRepository): Response
+
+    #[Route('/list/{page}', name: 'list', requirements: ['page' => '\d+'])]
+    public function list(SerieRepository $serieRepository, int $page = 1): Response
     {
 //        $series = $serieRepository->findAll();
 //        $series = $serieRepository->findBy(["status" => "ended"], ["name" => "ASC"]);
-
 //        $series = $serieRepository->findBy([], ['popularity' => 'DESC']);
-        $series = $serieRepository->findBestSeries();
+//        $series = $serieRepository->findBestSeries();
+
+        $nbSeries = $serieRepository->count();
+        $maxPage = ceil($nbSeries / 50);
+
+        //gestion des pages coté back
+        if ($page < 1) {
+            return $this->redirectToRoute('serie_list');
+        } elseif ($page > $maxPage) {
+            return $this->redirectToRoute('serie_list', ['page' => $maxPage]);
+        }
+
+        $series = $serieRepository->findBestSeriesWithPagination($page);
 
         return $this->render('serie/list.html.twig', [
-            "series" => $series
+            "series" => $series,
+            'currentPage' => $page,
+            'maxPage' => $maxPage
         ]);
     }
 
