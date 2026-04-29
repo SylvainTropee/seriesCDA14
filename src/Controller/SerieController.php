@@ -60,7 +60,7 @@ final class SerieController extends AbstractController
 
     #[Route('/create', name: 'create', methods: ["GET", "POST"])]
     public function create(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager): Response
     {
         $serie = new Serie();
@@ -68,10 +68,11 @@ final class SerieController extends AbstractController
 
         $serieForm->handleRequest($request);
 
-        if($serieForm->isSubmitted()){
+        if ($serieForm->isSubmitted()) {
             $serie->setDateCreated(new \DateTime());
             $entityManager->persist($serie);
             $entityManager->flush();
+            $this->addFlash('success',$serie->getName() . ' was created !');
         }
 
         return $this->render('serie/create.html.twig', [
@@ -89,9 +90,35 @@ final class SerieController extends AbstractController
         if ($serie) {
             $entityManager->remove($serie);
             $entityManager->flush();
+            $this->addFlash('success',$serie->getName() . ' was deleted !');
         }
         return $this->redirectToRoute('serie_list');
     }
+
+
+    #[Route('/{id}/update', name: 'update', methods: ["GET", "POST"])]
+    public function update(int                    $id,
+                           SerieRepository        $serieRepository,
+                           Request                $request,
+                           EntityManagerInterface $entityManager): Response
+    {
+        $serie = $serieRepository->find($id);
+        $serieForm = $this->createForm(SerieType::class, $serie);
+
+        $serieForm->handleRequest($request);
+
+        if ($serieForm->isSubmitted()) {
+            $entityManager->persist($serie);
+            $entityManager->flush();
+            $this->addFlash('success',$serie->getName() . ' was updated !');
+            return $this->redirectToRoute('serie_detail', ['id' => $serie->getId()]);
+        }
+
+        return $this->render("serie/update.html.twig", [
+            'serieForm' => $serieForm
+        ]);
+    }
+
 }
 
 

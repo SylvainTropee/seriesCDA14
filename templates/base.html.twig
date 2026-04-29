@@ -28,6 +28,14 @@
             </a>
         </h1>
         {% include 'views/nav/nav.html.twig' %}
+        {# read and display all flash messages #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash flash-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
     </header>
     <main>
         {% block body %}{% endblock %}
