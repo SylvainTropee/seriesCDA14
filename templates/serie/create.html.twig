@@ -2,5 +2,10 @@
 
 {% block body %}
     <h2>Create a TV-Show</h2>
+
+    {{ form_start(serieForm) }}
+    {{ form_widget(serieForm) }}
+    <button>Create a Serie</button>
+    {{ form_end(serieForm) }}
 {% endblock %}
 
