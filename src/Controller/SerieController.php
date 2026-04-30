@@ -7,6 +7,8 @@ use App\Form\SerieType;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -61,18 +63,32 @@ final class SerieController extends AbstractController
     #[Route('/create', name: 'create', methods: ["GET", "POST"])]
     public function create(
         Request                $request,
-        EntityManagerInterface $entityManager): Response
+        EntityManagerInterface $entityManager,
+        #[Autowire('%serie_poster_dir%')] string $posterDir
+    ): Response
     {
         $serie = new Serie();
         $serieForm = $this->createForm(SerieType::class, $serie);
 
         $serieForm->handleRequest($request);
 
-        if ($serieForm->isSubmitted()) {
+        if ($serieForm->isSubmitted() && $serieForm->isValid()) {
+
+            //réupération de l'image et traitement
+            $file = $serieForm->get('poster')->getData();
+            /**
+             * @var UploadedFile $file
+             */
+            $newFileName = $serie->getName() . "-" . uniqid() . "." . $file->guessExtension();
+            //$file->move($this->getParameter('serie_poster_dir'), $newFileName);
+            $file->move($posterDir, $newFileName);
+            $serie->setPoster($newFileName);
+
             $serie->setDateCreated(new \DateTime());
             $entityManager->persist($serie);
             $entityManager->flush();
             $this->addFlash('success',$serie->getName() . ' was created !');
+            return $this->redirectToRoute('serie_detail', ['id' => $serie->getId()]);
         }
 
         return $this->render('serie/create.html.twig', [
@@ -107,7 +123,7 @@ final class SerieController extends AbstractController
 
         $serieForm->handleRequest($request);
 
-        if ($serieForm->isSubmitted()) {
+        if ($serieForm->isSubmitted() && $serieForm->isValid()) {
             $entityManager->persist($serie);
             $entityManager->flush();
             $this->addFlash('success',$serie->getName() . ' was updated !');

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SerieRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SerieRepository::class)]
 class Serie
@@ -14,15 +15,19 @@ class Serie
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: "The name is required !")]
+    #[Assert\Length(min: 2, max: 255, minMessage: "Min {{ min }} caracters !", maxMessage: "Max 255 caracters !")]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $overview = null;
 
+    #[Assert\Choice(choices: ["ended", "canceled", "returning"], message: "Value not ok !")]
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
+    #[Assert\Range(notInRangeMessage: "Vote must be between {{ min }} and {{ max }}", min: 0, max: 10)]
     #[ORM\Column(type: Types::DECIMAL, precision: 3, scale: 1)]
     private ?string $vote = null;
 
@@ -32,9 +37,11 @@ class Serie
     #[ORM\Column(length: 255)]
     private ?string $genres = null;
 
+    #[Assert\LessThan(propertyPath: "lastAirDate", message: "Start date must be !")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $firstAirDate = null;
 
+    #[Assert\GreaterThan(propertyPath: "firstAirDate")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $lastAirDate = null;
 
@@ -44,6 +51,7 @@ class Serie
     #[ORM\Column(length: 255)]
     private ?string $poster = null;
 
+    #[Assert\Type(type: 'integer', message: "The value {{ value }} is not a valid {{ type }}")]
     #[ORM\Column]
     private ?int $tmdbId = null;
 
@@ -135,7 +143,7 @@ class Serie
         return $this->firstAirDate;
     }
 
-    public function setFirstAirDate(\DateTime $firstAirDate): static
+    public function setFirstAirDate(?\DateTime $firstAirDate): static
     {
         $this->firstAirDate = $firstAirDate;
 
@@ -147,7 +155,7 @@ class Serie
         return $this->lastAirDate;
     }
 
-    public function setLastAirDate(\DateTime $lastAirDate): static
+    public function setLastAirDate(?\DateTime $lastAirDate): static
     {
         $this->lastAirDate = $lastAirDate;
 
