@@ -24,14 +24,30 @@
                        onclick="return confirm('Are you sure you want to delete {{ serie.name }} ?')">Delete</a>
                     <a class="link_button" href="{{ path('serie_update', {'id': serie.id}) }}">Update</a>
                 </div>
-                    <div>User ratings : {{ serie.vote }}</div>
-                    <div>Categorized in : {{ serie.genres }}}</div>
-                    <div>Serie status : {{ serie.status }}</div>
-                    <div>Aired from {{ serie.firstAirDate | date('Y-m-d') }}
-                        to {{ serie.lastAirDate | date('Y-m-d') }}</div>
-                    <div>{{ serie.overview | nl2br }}</div>
-                </div>
+                <div>User ratings : {{ serie.vote }}</div>
+                <div>Categorized in : {{ serie.genres }}}</div>
+                <div>Serie status : {{ serie.status }}</div>
+                <div>Aired from {{ serie.firstAirDate | date('Y-m-d') }}
+                    to {{ serie.lastAirDate | date('Y-m-d') }}</div>
+                <div>{{ serie.overview | nl2br }}</div>
             </div>
+        </div>
+
+        <div class="seasons">
+            <h3>Seasons !</h3>
+            {% for season in serie.seasons %}
+                <article>
+                    <img src="{{ asset('img/posters/seasons/' ~ season.poster) }}"
+                         alt="{{ serie.name }} #{{ season.number }}">
+                    <div>
+                        <h4>#{{ season.number }}</h4>
+                        <div>{{ season.firstAirDate | date('d/m/Y') }}</div>
+                        <div>{{ season.overview | nl2br }}</div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+
     </section>
 {% endblock %}
 
